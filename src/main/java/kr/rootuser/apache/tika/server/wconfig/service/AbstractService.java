@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerMapping;
 
 import kr.rootuser.apache.tika.server.wconfig.ParserConstants;
@@ -27,6 +28,10 @@ public class AbstractService {
 	}
 
 	protected String getFilepath(HttpServletRequest request) {
-		return (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+		String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+		String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+		AntPathMatcher apm = new AntPathMatcher();
+		String finalPath = apm.extractPathWithinPattern(bestMatchPattern, path);
+		return finalPath;
 	}
 }

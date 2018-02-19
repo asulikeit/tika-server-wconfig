@@ -1,6 +1,5 @@
 package kr.rootuser.apache.tika.server.wconfig.logic.impl;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,9 +55,9 @@ public class TikaPdfParser implements PdfParser {
 	private FileInputStream buildFileStream(String filePath) throws TikaServerException {
 		FileInputStream stream;
 		try {
-			ClassLoader classLoader = TikaPdfParser.class.getClassLoader();
-			File file = new File(classLoader.getResource(filePath).getFile());
-			stream = new FileInputStream(file);
+			/*ClassLoader classLoader = TikaPdfParser.class.getClassLoader();
+			File file = new File(classLoader.getResource(filePath).getFile());*/
+			stream = new FileInputStream(filePath);
 		} catch (FileNotFoundException | NullPointerException e) {
 			LOG.error(ParserConstants.FILE_NOTFOUND + " : " + filePath);
 			throw new TikaServerException(ParserConstants.FILE_NOTFOUND);

@@ -1,7 +1,5 @@
 package kr.rootuser.apache.tika.server.wconfig.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,21 +15,21 @@ public class ParserService extends AbstractService {
 	@Autowired
 	PdfParser parser;
 
-	@GetMapping("/tika/pdf/**")
-	public ResponseEntity<String> getTextFromPdf(HttpServletRequest request,
+	@GetMapping("/tika/pdf")
+	public ResponseEntity<String> getTextFromPdf(@RequestParam("file") String filePath,
 			@RequestParam(value = LANG, defaultValue = ENG_KOR) String language) {
 		try {
-			return buildResponse(parser.parse(getFilepath(request), language));
+			return buildResponse(parser.parse(filePath, language));
 		} catch (TikaServerException e) {
 			return buildResponseError(e);
 		}
 	}
 
-	@GetMapping("/tika/scanpdf/**")
-	public ResponseEntity<String> getTextFromScan(HttpServletRequest request,
+	@GetMapping("/tika/scanpdf")
+	public ResponseEntity<String> getTextFromScan(@RequestParam("file") String filePath,
 			@RequestParam(value = LANG, defaultValue = ENG_KOR) String language) {
 		try {
-			return buildResponse(parser.parseScan(getFilepath(request), language));
+			return buildResponse(parser.parseScan(filePath, language));
 		} catch (TikaServerException e) {
 			return buildResponseError(e);
 		}

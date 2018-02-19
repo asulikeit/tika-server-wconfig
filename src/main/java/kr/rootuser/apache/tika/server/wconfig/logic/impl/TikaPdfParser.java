@@ -14,6 +14,8 @@ import org.apache.tika.parser.Parser;
 import org.apache.tika.parser.ocr.TesseractOCRConfig;
 import org.apache.tika.parser.pdf.PDFParserConfig;
 import org.apache.tika.sax.BodyContentHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
@@ -26,7 +28,8 @@ public class TikaPdfParser implements PdfParser {
 	
 	@Autowired
 	private ApplicationConfig configer;
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(TikaPdfParser.class);
 	private static final String SCAN = "scan";
 	private static final String PDF = "pdf";
 
@@ -43,6 +46,7 @@ public class TikaPdfParser implements PdfParser {
 		try {
 			getParserConfig(type).parse(buildFileStream(filePath), handler, getMetadata(), getParseContext(type, language));
 		} catch (IOException | SAXException | TikaException e) {
+			LOG.error("Failed to parse pdf - {}", filePath);
 			throw new TikaServerException("Failed to parse pdf");
 		}
 		return handler.toString();
@@ -55,6 +59,7 @@ public class TikaPdfParser implements PdfParser {
 			File file = new File(classLoader.getResource(filePath).getFile());
 			stream = new FileInputStream(file);
 		} catch (FileNotFoundException | NullPointerException e) {
+			LOG.error("file not found - {}", filePath);
 			throw new TikaServerException("file not found");
 		}
 		return stream;

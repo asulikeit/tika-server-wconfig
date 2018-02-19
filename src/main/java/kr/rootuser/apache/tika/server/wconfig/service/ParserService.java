@@ -24,7 +24,7 @@ public class ParserService extends AbstractService {
 	public ResponseEntity<String> getTextFromPdf(@PathVariable("file") String filePath,
 			@RequestParam(value = "lang", defaultValue = "eng+kor") String language) {
 		try {
-			LOG.debug("========> " + filePath);
+			LOG.debug("Try to parse file - {} ", filePath);
 			return buildResponse(parser.parse(filePath, language));
 		} catch (TikaServerException e) {
 			return buildResponseError(e);
@@ -35,7 +35,7 @@ public class ParserService extends AbstractService {
 	public ResponseEntity<String> getTextFromScan(@PathVariable("file") String filePath,
 			@RequestParam(value = "lang", defaultValue = "eng+kor") String language) {
 		try {
-			LOG.debug("========> " + filePath);
+			LOG.debug("Try to parse file - {} ", filePath);
 			return buildResponse(parser.parseScan(filePath, language));
 		} catch (TikaServerException e) {
 			return buildResponseError(e);

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 import kr.rootuser.apache.tika.server.wconfig.ApplicationConfig;
+import kr.rootuser.apache.tika.server.wconfig.ParserConstants;
 import kr.rootuser.apache.tika.server.wconfig.logic.PdfParser;
 
 @Component
@@ -46,8 +47,8 @@ public class TikaPdfParser implements PdfParser {
 		try {
 			getParserConfig(type).parse(buildFileStream(filePath), handler, getMetadata(), getParseContext(type, language));
 		} catch (IOException | SAXException | TikaException e) {
-			LOG.error("Failed to parse pdf - {}", filePath);
-			throw new TikaServerException("Failed to parse pdf");
+			LOG.error(ParserConstants.FAIL_PARSE + " : " + filePath);
+			throw new TikaServerException(ParserConstants.FAIL_PARSE);
 		}
 		return handler.toString();
 	}
@@ -59,8 +60,8 @@ public class TikaPdfParser implements PdfParser {
 			File file = new File(classLoader.getResource(filePath).getFile());
 			stream = new FileInputStream(file);
 		} catch (FileNotFoundException | NullPointerException e) {
-			LOG.error("file not found - {}", filePath);
-			throw new TikaServerException("file not found");
+			LOG.error(ParserConstants.FILE_NOTFOUND + " : " + filePath);
+			throw new TikaServerException(ParserConstants.FILE_NOTFOUND);
 		}
 		return stream;
 	}

@@ -7,8 +7,8 @@
     mvn clean install
 
 ### start server
-    cp target/tika-server-wconfig-0.0.1-SNAPSHOT.jar ./
-    java -jar tika-server-wconfig-0.0.1-SNAPSHOT.jar
+    cp target/tika-server-wconfig-0.0.1-RELEASE.jar ./
+    java -jar tika-server-wconfig-0.0.1-RELEASE.jar
     
 ### usage
     curl -v http://localhost:8080/tika/pdf?file=/home/user/Documents/ORG.pdf
